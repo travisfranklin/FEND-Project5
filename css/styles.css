@@ -209,6 +209,8 @@ select option {
   color: #fff;
   position:relative;
   align-items: flex-start;
+  align-content: flex-start;
+  justify-content: flex-start;
 }
 #restaurants-list li {
   background-color: transparent;
