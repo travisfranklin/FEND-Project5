@@ -171,7 +171,7 @@ createRestaurantHTML = (restaurant) => {
   };
 
   const li = document.createElement('li');
-  const div = document.createElement('div');
+  const a = document.createElement('a');
   const gradient = document.createElement('div');
   const picture = document.createElement('picture');
   const source = document.createElement('source');
@@ -182,7 +182,8 @@ createRestaurantHTML = (restaurant) => {
   const address = document.createElement('p');
   const more = document.createElement('a');
 
-  div.className = 'restaurant-wrapper';
+  a.className = 'restaurant-wrapper';
+  a.href = DBHelper.urlForRestaurant(restaurant);
   gradient.className = 'gradient-mask';
   picture.className = 'restaurant-img';
   source.srcset = '';
@@ -195,13 +196,12 @@ createRestaurantHTML = (restaurant) => {
   neighborhood.innerHTML = restaurant.neighborhood;
   address.innerHTML = restaurant.address;
   more.innerHTML = 'View Details ';
-  more.href = DBHelper.urlForRestaurant(restaurant);
 
-  li.append(div);
-  div.append(gradient);
+  li.append(a);
+  a.append(gradient);
   gradient.style.background = chooseGradient();
-  div.append(entryBox);
-  div.append(picture);
+  a.append(entryBox);
+  a.append(picture);
   picture.append(source);
   picture.append(img);
   entryBox.append(neighborhood);
@@ -236,3 +236,8 @@ addMarkersToMap = (restaurants = self.restaurants) => {
 //     self.markers.push(marker);
 //   });
 // };
+
+document.getElementById('restaurant-wrapper').click(function() {
+  window.location = document.querySelector(this).querySelector("a").attr("href");
+  return false;
+});
