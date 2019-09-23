@@ -25,6 +25,7 @@ body {
 
 section {
   display: flex;
+  flex-wrap: wrap;
 }
 
 ul, li {
@@ -41,7 +42,7 @@ ul {
 }
 
 a {
-	color: orange;
+	color: white;
 	text-decoration: none;
 }
 a:hover, a:focus {
@@ -62,7 +63,7 @@ article, aside, canvas, details, figcaption, figure, footer, header, hgroup, men
 
 #footer {
 
-  background-color: #444;
+  background-color: #12191b;
   color: #aaa;
   font-size: 8pt;
   letter-spacing: 1px;
@@ -72,15 +73,16 @@ article, aside, canvas, details, figcaption, figure, footer, header, hgroup, men
 }
 /* ====================== Navigation ====================== */
 nav {
-  position: absolute;
-  z-index: 999999;
-  height: 56px;
-  max-width: 400px;
-  width: 100%;
-  background-color: transparent;
-  text-align: right;
-  right: 0;
+  height: 53px;
+  background: #fff;
+  border-bottom: 1px solid #ddddea;
 }
+
+nav .logo {
+  margin: 7px 20px;
+  height: 39px;
+}
+
 nav h1 {
   Padding: 10px;
 }
@@ -126,8 +128,20 @@ nav h1 a {
 #map {
   background-color: #eaeaea;
   flex-grow: 1;
+  min-width: 617px;
 }
 /* ====================== Restaurant Filtering ====================== */
+.header-wrapper {
+  position: absolute;
+  z-index: 999999;
+  height: 56px;
+  max-width: 400px;
+  width: 100%;
+  background-color: transparent;
+  text-align: right;
+  right: 0;
+}
+
 .filter-options {
   font-size: 12px;
   width: 100%;
@@ -157,21 +171,22 @@ nav h1 a {
 select {
   font-size: 12px;
   font-weight: 700;
-  color: #000;
+  color: #12191b;
   line-height: 1.3;
   padding: .6em 1.4em .5em .8em;
   width: 160px;
   max-width: 100%;
   box-sizing: border-box;
   margin-right: 10px;
-  border: 2px solid #000;
-  /*box-shadow: 0 1px 0 1px rgba(0,0,0,.04);*/
+  border-style: solid;
+  border-width: 0 0 2px 0;
+  border-color: #12191b;
   border-radius: 2px;
   -moz-appearance: none;
   -webkit-appearance: none;
   appearance: none;
   background-color: transparent;
-  background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23000000%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
+  background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2312191b%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
   background-repeat: no-repeat, repeat;
   background-position: right .7em top 50%, 0 0;
   background-size: .65em auto, 100%;
@@ -180,10 +195,10 @@ select::-ms-expand {
   display: none;
 }
 select:hover {
-  border-color: #98cdf5;
+  border-color: #e80b7b;
 }
 select:focus {
-  border-color: #98cdf5;
+  border-color: #e80b7b;
   /*box-shadow: 0 0 1px 3px rgba(59, 153, 252, .7);*/
   /*box-shadow: 0 0 0 3px -moz-mac-focusring;*/
   color: #000;
@@ -196,10 +211,12 @@ select option {
 /* ====================== Restaurant Listing ====================== */
 
 #restaurants-list {
+  border-top: 3px solid #fff;
   background-color: transparent;
   list-style: none;
   margin: 0;
   padding: 0;
+  min-width: 408px;
   text-align: left;
   display: flex;
   flex-wrap: wrap;
@@ -217,7 +234,7 @@ select option {
   overflow: hidden;
   margin: 2px;
   align-items: flex-start;
-
+  flex-grow: 1;
 }
 
 #restaurants-list li:hover {
@@ -252,8 +269,9 @@ select option {
   right: 0;
   top: 0;
   object-fit: cover;
-  height:100%;
+  height: 100%;
   z-index: -1;
+  display: flex;
 }
 
 #restaurants-list li .entry-box {
@@ -294,7 +312,7 @@ select option {
 }
 
 #restaurants-list li .entry-box .neighborhood-label {
-  background-color: #da0050;
+  background-color: #e80b7b;
   color: #fff;
   display: inline-block;
   font-size: 8pt;
@@ -306,13 +324,10 @@ select option {
 }
 
 #restaurants-list img {
-  height:100%;
-  bottom: 0;
-  left: 0;
-  position: absolute;
-  right: 0;
-  top: 0;
   z-index: 1;
+  object-fit: cover;
+  height: auto;
+  width: 100%;
 }
 
 
@@ -406,4 +421,51 @@ select option {
 }
 #restaurant-hours td {
   color: #666;
+}
+
+/* ====================== Breakpoints ====================== */
+
+@media screen and (max-width: 1024px) {
+
+
+
+  #restaurants-list {
+    height: 40vh;
+    width: 100%;
+    flex-basis: unset;
+    align-items: stretch;
+    align-content: stretch;
+    flex-wrap: wrap;
+    order: 1;
+  }
+
+  #restaurants-list .restaurant-wrapper {
+    min-width: 140px;
+    /*max-width: 200px;*/
+    width: auto;
+  }
+
+  #map {
+    width: 100%;
+    min-width: unset;
+    min-height: 50vh;
+    flex: ;
+  }
+}
+
+@media screen and (max-width: 500px) {
+
+  #restaurants-list {
+    min-width: unset;
+  }
+
+  .header-wrapper {
+    max-width: 200px;
+  }
+
+  select {
+    margin-top: 10px;
+    padding: .4em 1em .3em .6em;
+  }
+
 }
