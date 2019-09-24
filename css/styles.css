@@ -389,6 +389,13 @@ select option {
     border-top: none;
 }
 
+.inside #map {
+  width: unset;
+  min-width: unset;
+  min-height: 41vh;
+  order: 2;
+}
+
 #restaurant-img {
 	width: 50%;
   filter: contrast(70%);
@@ -477,7 +484,6 @@ span {
 
   #restaurants-list .restaurant-wrapper {
     min-width: 140px;
-    /*max-width: 200px;*/
     width: auto;
   }
 
@@ -491,7 +497,6 @@ span {
 
   #map {
     width: unset;
-    min-width: unset;
     min-height: 41vh;
     order: 2;
   }

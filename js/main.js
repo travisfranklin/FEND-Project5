@@ -236,8 +236,3 @@ addMarkersToMap = (restaurants = self.restaurants) => {
 //     self.markers.push(marker);
 //   });
 // };
-
-document.getElementById('restaurant-wrapper').click(function() {
-  window.location = document.querySelector(this).querySelector("a").attr("href");
-  return false;
-});
