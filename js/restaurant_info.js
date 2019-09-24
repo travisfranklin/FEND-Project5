@@ -21,20 +21,19 @@ initMap = () => {
         zoom: 16,
         scrollWheelZoom: false
       });
-      L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.jpg70?access_token={mapboxToken}', {
-        mapboxToken: 'pk.eyJ1IjoidHJhdmlzZnJhbmtsaW4iLCJhIjoiY2pnbnVtbm11MHd5NTJ4cXN6a3prNDg5byJ9.UPjQTVt3nna-nejnj2eXDA
-',
+      L.tileLayer('https://api.mapbox.com/styles/v1/travislf/ck0pmk1kq2kub1cl3w8hztbd1/tiles/256/{z}/{x}/{y}@2x?access_token={mapboxToken}', {
+        mapboxToken: 'pk.eyJ1IjoidHJhdmlzZnJhbmtsaW4iLCJhIjoiY2pnbnVtbm11MHd5NTJ4cXN6a3prNDg5byJ9.UPjQTVt3nna-nejnj2eXDA',
         maxZoom: 18,
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
           '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
           'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-        id: 'mapbox.streets'
+        id: 'mapbox.streets',
       }).addTo(newMap);
       fillBreadcrumb();
       DBHelper.mapMarkerForRestaurant(self.restaurant, self.newMap);
     }
   });
-}
+};
 
 /* window.initMap = () => {
   fetchRestaurantFromURL((error, restaurant) => {
@@ -75,7 +74,7 @@ fetchRestaurantFromURL = (callback) => {
       callback(null, restaurant)
     });
   }
-}
+};
 
 /**
  * Create restaurant HTML and add it to the webpage
@@ -88,8 +87,11 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   address.innerHTML = restaurant.address;
 
   const image = document.getElementById('restaurant-img');
-  image.className = 'restaurant-img'
+  image.className = 'restaurant-img';
   image.src = DBHelper.imageUrlForRestaurant(restaurant);
+
+  const imageMobile = document.getElementById('restaurant-img-mobile');
+  imageMobile.src = DBHelper.imageUrlForRestaurant(restaurant);
 
   const cuisine = document.getElementById('restaurant-cuisine');
   cuisine.innerHTML = restaurant.cuisine_type;
@@ -100,7 +102,7 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   }
   // fill reviews
   fillReviewsHTML();
-}
+};
 
 /**
  * Create restaurant operating hours HTML table and add it to the webpage.
@@ -120,7 +122,7 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
 
     hours.appendChild(row);
   }
-}
+};
 
 /**
  * Create all reviews HTML and add them to the webpage.
@@ -142,7 +144,7 @@ fillReviewsHTML = (reviews = self.restaurant.reviews) => {
     ul.appendChild(createReviewHTML(review));
   });
   container.appendChild(ul);
-}
+};
 
 /**
  * Create review HTML and add it to the webpage.
@@ -150,23 +152,27 @@ fillReviewsHTML = (reviews = self.restaurant.reviews) => {
 createReviewHTML = (review) => {
   const li = document.createElement('li');
   const name = document.createElement('p');
-  name.innerHTML = review.name;
+  name.innerHTML = `<span>Name:</span>&#9;${review.name}`;
+  name.className = 'review-name';
   li.appendChild(name);
 
   const date = document.createElement('p');
-  date.innerHTML = review.date;
+  date.innerHTML = `<span>Date:</span>&#9;${review.date}`;
+  date.className = 'review-date';
   li.appendChild(date);
 
   const rating = document.createElement('p');
-  rating.innerHTML = `Rating: ${review.rating}`;
+  rating.innerHTML = `<span>Rated:</span>&#9;${review.rating} / 5`;
+  rating.className = 'review-rating';
   li.appendChild(rating);
 
   const comments = document.createElement('p');
   comments.innerHTML = review.comments;
+  comments.className = 'review-comments';
   li.appendChild(comments);
 
   return li;
-}
+};
 
 /**
  * Add restaurant name to the breadcrumb navigation menu
@@ -176,7 +182,7 @@ fillBreadcrumb = (restaurant=self.restaurant) => {
   const li = document.createElement('li');
   li.innerHTML = restaurant.name;
   breadcrumb.appendChild(li);
-}
+};
 
 /**
  * Get a parameter by name from page URL.
@@ -192,4 +198,4 @@ getParameterByName = (name, url) => {
   if (!results[2])
     return '';
   return decodeURIComponent(results[2].replace(/\+/g, ' '));
-}
+};
