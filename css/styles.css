@@ -7,14 +7,18 @@
   border-collapse:collapse;
 }
 
+label {
+  position:absolute;
+  right: -999999999px;
+}
+
 html {
   scroll-behavior: smooth;
 }
 
-body,td,th,p{
+body,td,th,p {
 	font-family: Helvetica, sans-serif;
 	font-size: 10pt;
-	color: #fff;
 	line-height: 1.5;
 }
 body {

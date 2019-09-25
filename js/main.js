@@ -184,18 +184,28 @@ createRestaurantHTML = (restaurant) => {
 
   a.className = 'restaurant-wrapper';
   a.href = DBHelper.urlForRestaurant(restaurant);
+  a.setAttribute('aria-label', `${restaurant.name}. ${restaurant.neighborhood} at ${restaurant.address}. View details.`);
   gradient.className = 'gradient-mask';
+  gradient.setAttribute('aria-hidden', 'true');
   picture.className = 'restaurant-img';
+  picture.setAttribute('aria-hidden', 'true');
   source.srcset = '';
   source.media = '(min-width: 465px)';
   source.type = 'image/jpg';
+  source.setAttribute('aria-hidden', 'true');
   img.src = DBHelper.imageUrlForRestaurant(restaurant);
+  img.setAttribute('aria-hidden', 'true');
   entryBox.className = 'entry-box';
+  entryBox.setAttribute('aria-hidden', 'true');
   name.innerHTML = restaurant.name;
+  name.setAttribute('aria-hidden', 'true');
   neighborhood.className = 'neighborhood-label';
   neighborhood.innerHTML = restaurant.neighborhood;
+  neighborhood.setAttribute('aria-hidden', 'true');
   address.innerHTML = restaurant.address;
+  address.setAttribute('aria-label', `address for ${restaurant.name}:`);
   more.innerHTML = 'View Details ';
+  more.setAttribute('aria-hidden', 'true');
 
   li.append(a);
   a.append(gradient);
@@ -236,3 +246,37 @@ addMarkersToMap = (restaurants = self.restaurants) => {
 //     self.markers.push(marker);
 //   });
 // };
+
+/**
+ * Add hide specific elements from screen readers.
+ */
+hideItemsFromScreenreader = (className) => {
+  const items = Array.from(document.getElementsByClassName(className));
+
+  for (item of items) {
+    item.setAttribute('aria-hidden', 'true');
+    item.setAttribute('tabindex', -1);
+  }
+};
+
+/**
+ * Add accessibility labeling for map copyright.
+ */
+addMapCopyright = () => {
+  const mapAttribution = Array.from(document.getElementsByClassName('leaflet-control-attribution'))[0];
+  mapAttribution.setAttribute(
+    'aria-label',
+    'Leaflet Map Data copyright Open Street Map, CC-BY-SA, Imagery copyright Mapbox'
+  );
+  mapAttribution.setAttribute('tabindex', 0);
+};
+
+/**
+ * Run screenreader adjustment functions after site has loaded.
+ */
+window.onload = () => {
+  hideItemsFromScreenreader('leaflet-control-zoom-in');
+  hideItemsFromScreenreader('leaflet-control-zoom-out');
+  hideItemsFromScreenreader('leaflet-marker-icon');
+  addMapCopyright();
+};

@@ -83,18 +83,30 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   const name = document.getElementById('restaurant-name');
   name.innerHTML = restaurant.name;
 
+
   const address = document.getElementById('restaurant-address');
   address.innerHTML = restaurant.address;
 
   const image = document.getElementById('restaurant-img');
   image.className = 'restaurant-img';
   image.src = DBHelper.imageUrlForRestaurant(restaurant);
+  image.setAttribute('alt', `Picture of ${restaurant.name}.`);
+  image.setAttribute('tabindex', 0);
 
   const imageMobile = document.getElementById('restaurant-img-mobile');
   imageMobile.src = DBHelper.imageUrlForRestaurant(restaurant);
+  imageMobile.setAttribute('alt', `Picture of ${restaurant.name}.`);
+  imageMobile.setAttribute('tabindex', 0);
+
 
   const cuisine = document.getElementById('restaurant-cuisine');
   cuisine.innerHTML = restaurant.cuisine_type;
+
+  const map = document.getElementById('map');
+  map.setAttribute(
+    'aria-label',
+    `Map showing ${restaurant.name}'s location in ${restaurant.neighborhood} New York.`,
+  );
 
   // fill operating hours
   if (restaurant.operating_hours) {
@@ -114,6 +126,8 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
 
     const day = document.createElement('td');
     day.innerHTML = key;
+    day.setAttribute('tabindex', 0);
+    day.setAttribute('aria-label', `${key}, ${operatingHours[key]}`);
     row.appendChild(day);
 
     const time = document.createElement('td');
@@ -130,12 +144,14 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
 fillReviewsHTML = (reviews = self.restaurant.reviews) => {
   const container = document.getElementById('reviews-container');
   const title = document.createElement('h2');
-  title.innerHTML = 'Reviews';
+  title.innerHTML = 'reviews';
+  title.setAttribute('tabindex', 0);
   container.appendChild(title);
 
   if (!reviews) {
     const noReviews = document.createElement('p');
     noReviews.innerHTML = 'No reviews yet!';
+    noReviews.setAttribute('tabindex', 0);
     container.appendChild(noReviews);
     return;
   }
@@ -154,21 +170,29 @@ createReviewHTML = (review) => {
   const name = document.createElement('p');
   name.innerHTML = `<span>Name:</span>&#9;${review.name}`;
   name.className = 'review-name';
+  name.setAttribute('tabindex', 0);
+  name.setAttribute('aria-label', `Review by ${review.name}.`);
   li.appendChild(name);
 
   const date = document.createElement('p');
   date.innerHTML = `<span>Date:</span>&#9;${review.date}`;
   date.className = 'review-date';
+  date.setAttribute('tabindex', 0);
+  date.setAttribute('aria-label', `reviewed on ${review.date}.`);
+
   li.appendChild(date);
 
   const rating = document.createElement('p');
   rating.innerHTML = `<span>Rated:</span>&#9;${review.rating} / 5`;
   rating.className = 'review-rating';
+  rating.setAttribute('tabindex', 0);
+  rating.setAttribute('aria-label', `Rated ${review.rating} out of 5`);
   li.appendChild(rating);
 
   const comments = document.createElement('p');
   comments.innerHTML = review.comments;
   comments.className = 'review-comments';
+  comments.setAttribute('tabindex', 0);
   li.appendChild(comments);
 
   return li;
@@ -177,11 +201,12 @@ createReviewHTML = (review) => {
 /**
  * Add restaurant name to the breadcrumb navigation menu
  */
-fillBreadcrumb = (restaurant=self.restaurant) => {
+fillBreadcrumb = (restaurant = self.restaurant) => {
   const breadcrumb = document.getElementById('breadcrumb');
   const li = document.createElement('li');
   li.innerHTML = restaurant.name;
   breadcrumb.appendChild(li);
+  document.title = `Gourmet | ${restaurant.name} info`;
 };
 
 /**
@@ -198,4 +223,38 @@ getParameterByName = (name, url) => {
   if (!results[2])
     return '';
   return decodeURIComponent(results[2].replace(/\+/g, ' '));
+};
+
+/**
+ * Add hide specific elements from screen readers.
+ */
+hideItemsFromScreenreader = (className) => {
+  const items = Array.from(document.getElementsByClassName(className));
+
+  for (item of items) {
+    item.setAttribute('aria-hidden', 'true');
+    item.setAttribute('tabindex', -1);
+  }
+};
+
+/**
+ * Add accessibility labeling for map copyright.
+ */
+addMapCopyright = () => {
+  const mapAttribution = Array.from(document.getElementsByClassName('leaflet-control-attribution'))[0];
+  mapAttribution.setAttribute(
+    'aria-label',
+    'Leaflet Map Data copyright Open Street Map, CC-BY-SA, Imagery copyright Mapbox',
+  );
+  mapAttribution.setAttribute('tabindex', 0);
+};
+
+/**
+ * Run screenreader adjustment functions after site has loaded.
+ */
+window.onload = () => {
+  hideItemsFromScreenreader('leaflet-control-zoom-in');
+  hideItemsFromScreenreader('leaflet-control-zoom-out');
+  hideItemsFromScreenreader('leaflet-marker-icon');
+  addMapCopyright();
 };
