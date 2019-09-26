@@ -139,7 +139,7 @@ nav h1 a {
 /* ====================== Map ====================== */
 
 #map {
-  background-color: #eaeaea;
+  background-color: #ffffff;
   flex-grow: 1;
   min-width: 617px;
 }
