@@ -73,34 +73,26 @@ fillCuisinesHTML = (cuisines = self.cuisines) => {
  */
 
 initMap = () => {
-  self.newMap = L.map('map', {
-        center: [40.722216, -73.987501],
-        zoom: 12,
-        scrollWheelZoom: false
-      });
-  L.tileLayer('https://api.mapbox.com/styles/v1/travislf/ck0pmk1kq2kub1cl3w8hztbd1/tiles/256/{z}/{x}/{y}@2x?access_token={mapboxToken}', {
-    mapboxToken: 'pk.eyJ1IjoidHJhdmlzbGYiLCJhIjoiY2swcGtydzJ3MDF4YzNjcG9wajg2NHo0aiJ9.0vuTGxRyn8Y2nSTDkxNXKA',
-    maxZoom: 18,
-    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-      '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-      'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-    id: 'mapbox.streets',
-  }).addTo(newMap);
-
+  if (navigator.onLine) {
+    self.newMap = L.map('map', {
+          center: [40.722216, -73.987501],
+          zoom: 12,
+          scrollWheelZoom: false
+        });
+    L.tileLayer('https://api.mapbox.com/styles/v1/travislf/ck0pmk1kq2kub1cl3w8hztbd1/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoidHJhdmlzbGYiLCJhIjoiY2swcGtydzJ3MDF4YzNjcG9wajg2NHo0aiJ9.0vuTGxRyn8Y2nSTDkxNXKA', {
+      mapboxToken: 'pk.eyJ1IjoidHJhdmlzbGYiLCJhIjoiY2swcGtydzJ3MDF4YzNjcG9wajg2NHo0aiJ9.0vuTGxRyn8Y2nSTDkxNXKA',
+      maxZoom: 18,
+      attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+        '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+        'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+      id: 'mapbox.streets',
+    }).addTo(newMap);
+    screenreaderFixes();
+  }
   updateRestaurants();
+
+  // once map is loaded, screenreader fixes can be initiated.
 };
-// window.initMap = () => {
-//   let loc = {
-//     lat: 40.722216,
-//     lng: -73.987501
-//   };
-// self.map = new google.maps.Map(document.getElementById('map'), {
-//   zoom: 12,
-//   center: loc,
-//   scrollwheel: false
-// });
-//   updateRestaurants();
-// };
 
 /**
  * Update page and map for current restaurants.
@@ -147,9 +139,11 @@ resetRestaurants = (restaurants) => {
  */
 fillRestaurantsHTML = (restaurants = self.restaurants) => {
   const ul = document.getElementById('restaurants-list');
-  restaurants.forEach(restaurant => {
-    ul.append(createRestaurantHTML(restaurant));
-  });
+  // if either newMap or L (leaflet) aren't defined exit early.
+  if (!newMap || !L) return;
+    restaurants.forEach(restaurant => {
+      ul.append(createRestaurantHTML(restaurant));
+    });
   addMarkersToMap();
 };
 
@@ -189,8 +183,8 @@ createRestaurantHTML = (restaurant) => {
   gradient.setAttribute('aria-hidden', 'true');
   picture.className = 'restaurant-img';
   picture.setAttribute('aria-hidden', 'true');
-  source.srcset = '';
-  source.media = '(min-width: 465px)';
+  source.srcset = DBHelper.imageSrcsetForRestaurant(restaurant);
+  source.sizes = DBHelper.imageSizesForRestaurant(restaurant);  source.media = '(min-width: 465px)';
   source.type = 'image/jpg';
   source.setAttribute('aria-hidden', 'true');
   img.src = DBHelper.imageUrlForRestaurant(restaurant);
@@ -236,23 +230,12 @@ addMarkersToMap = (restaurants = self.restaurants) => {
     self.markers.push(marker);
   });
 };
-// addMarkersToMap = (restaurants = self.restaurants) => {
-//   restaurants.forEach(restaurant => {
-//     // Add marker to the map
-//     const marker = DBHelper.mapMarkerForRestaurant(restaurant, self.map);
-//     google.maps.event.addListener(marker, 'click', () => {
-//       window.location.href = marker.url;
-//     });
-//     self.markers.push(marker);
-//   });
-// };
 
 /**
  * Add hide specific elements from screen readers.
  */
 hideItemsFromScreenreader = (className) => {
   const items = Array.from(document.getElementsByClassName(className));
-
   for (item of items) {
     item.setAttribute('aria-hidden', 'true');
     item.setAttribute('tabindex', -1);
@@ -274,9 +257,18 @@ addMapCopyright = () => {
 /**
  * Run screenreader adjustment functions after site has loaded.
  */
-window.onload = () => {
+screenreaderFixes = () => {
   hideItemsFromScreenreader('leaflet-control-zoom-in');
   hideItemsFromScreenreader('leaflet-control-zoom-out');
   hideItemsFromScreenreader('leaflet-marker-icon');
   addMapCopyright();
 };
+
+// Register service worker only if supported
+if (navigator.serviceWorker) {
+  navigator.serviceWorker.register('/service-worker.js' , {scope: '/'}).then((reg) => {
+    console.log("Service Worker has been registered successfully!");
+  }).catch((e) => {
+    console.log("Couldn't register service worker... \n", e);
+  });
+}

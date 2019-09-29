@@ -16,40 +16,31 @@ initMap = () => {
     if (error) { // Got an error!
       console.error(error);
     } else {
-      self.newMap = L.map('map', {
-        center: [restaurant.latlng.lat, restaurant.latlng.lng],
-        zoom: 16,
-        scrollWheelZoom: false
-      });
-      L.tileLayer('https://api.mapbox.com/styles/v1/travislf/ck0pmk1kq2kub1cl3w8hztbd1/tiles/256/{z}/{x}/{y}@2x?access_token={mapboxToken}', {
-        mapboxToken: 'pk.eyJ1IjoidHJhdmlzbGYiLCJhIjoiY2swcGtydzJ3MDF4YzNjcG9wajg2NHo0aiJ9.0vuTGxRyn8Y2nSTDkxNXKA',
-        maxZoom: 18,
-        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-          '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-          'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-        id: 'mapbox.streets',
-      }).addTo(newMap);
+      if (navigator.onLine) {
+        try {
+          self.newMap = L.map('map', {
+            center: [restaurant.latlng.lat, restaurant.latlng.lng],
+            zoom: 16,
+            scrollWheelZoom: false
+          });
+          L.tileLayer('https://api.mapbox.com/styles/v1/travislf/ck0pmk1kq2kub1cl3w8hztbd1/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoidHJhdmlzbGYiLCJhIjoiY2swcGtydzJ3MDF4YzNjcG9wajg2NHo0aiJ9.0vuTGxRyn8Y2nSTDkxNXKA', {
+            mapboxToken: 'pk.eyJ1IjoidHJhdmlzbGYiLCJhIjoiY2swcGtydzJ3MDF4YzNjcG9wajg2NHo0aiJ9.0vuTGxRyn8Y2nSTDkxNXKA',
+            maxZoom: 18,
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+              '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+              'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+            id: 'mapbox.streets',
+          }).addTo(newMap);
+          DBHelper.mapMarkerForRestaurant(self.restaurant, self.newMap);
+        } catch(error) {
+          console.log("Map couldn't be initialized", error);
+        }
+      }
       fillBreadcrumb();
-      DBHelper.mapMarkerForRestaurant(self.restaurant, self.newMap);
+      screenreaderFixes();
     }
   });
 };
-
-/* window.initMap = () => {
-  fetchRestaurantFromURL((error, restaurant) => {
-    if (error) { // Got an error!
-      console.error(error);
-    } else {
-      self.map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 16,
-        center: restaurant.latlng,
-        scrollwheel: false
-      });
-      fillBreadcrumb();
-      DBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
-    }
-  });
-} */
 
 /**
  * Get current restaurant from page URL.
@@ -226,11 +217,21 @@ getParameterByName = (name, url) => {
 };
 
 /**
+ * Register service worker only if supported
+ */
+if (navigator.serviceWorker) {
+  navigator.serviceWorker.register('/service-worker.js' , {scope: '/'}).then(function(reg) {
+    console.log("Service Worker has been registered successfully!");
+  }).catch((e) => {
+    console.log("Couldn't register service worker... \n", e);
+  });
+}
+
+/**
  * Add hide specific elements from screen readers.
  */
 hideItemsFromScreenreader = (className) => {
   const items = Array.from(document.getElementsByClassName(className));
-
   for (item of items) {
     item.setAttribute('aria-hidden', 'true');
     item.setAttribute('tabindex', -1);
@@ -252,7 +253,7 @@ addMapCopyright = () => {
 /**
  * Run screenreader adjustment functions after site has loaded.
  */
-window.onload = () => {
+screenreaderFixes = () => {
   hideItemsFromScreenreader('leaflet-control-zoom-in');
   hideItemsFromScreenreader('leaflet-control-zoom-out');
   hideItemsFromScreenreader('leaflet-marker-icon');
