@@ -4,6 +4,9 @@ let cuisines;
 var newMap;
 var markers = [];
 
+const hostedOnGitHubFlag = (window.location.hostname === "travisfranklin.github.io") ? 'github' : '' ;
+const baseUrl = '/FEND-Project5';
+
 /**
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
  */

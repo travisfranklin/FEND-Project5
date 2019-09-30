@@ -9,7 +9,11 @@ class DBHelper {
    */
   static get DATABASE_URL() {
     const port = 8000 // Change this to your server port
-    return `../data/restaurants.json`;
+    if(hostedOnGitHubFlag) {
+      return `https://travisfranklin.github.io/FEND-Project5/data/restaurants.json`;
+    }else {
+      return `http://localhost:${port}/data/restaurants.json`;
+    }
   }
 
   /**
