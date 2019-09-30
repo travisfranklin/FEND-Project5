@@ -9,7 +9,7 @@ class DBHelper {
    */
   static get DATABASE_URL() {
     const port = 8000 // Change this to your server port
-    return `./data/restaurants.json`;
+    return `/data/restaurants.json`;
   }
 
   /**
@@ -151,7 +151,7 @@ class DBHelper {
    * and fallbacks to restaurant.id if former is missing.
    */
   static imageUrlForRestaurant(restaurant) {
-    let url = `/img/${(restaurant.photograph.split('.')[0]||restaurant.id)}-medium.jpg`;
+    let url = `/img/${(restaurant.photograph.split('.')[0]||restaurant.id)}-medium.jpeg`;
     return url;
   }
 
@@ -161,9 +161,9 @@ class DBHelper {
    */
   static imageSrcsetForRestaurant(restaurant) {
     const imageSrc = `/img/${(restaurant.photograph.split('.')[0]||restaurant.id)}`;
-    return `${imageSrc}-small.jpg 300w,
-            ${imageSrc}-medium.jpg 600w,
-            ${imageSrc}-large.jpg 800w`;
+    return `${imageSrc}-small.jpeg 300w,
+            ${imageSrc}-medium.jpeg 600w,
+            ${imageSrc}-large.jpeg 800w`;
   }
 
   /**
@@ -189,16 +189,16 @@ class DBHelper {
       marker.addTo(newMap);
     return marker;
   }
-  //  static mapMarkerForRestaurant(restaurant, map) {
-  //   const marker = new google.maps.Marker({
-  //     position: restaurant.latlng,
-  //     title: restaurant.name,
-  //     url: DBHelper.urlForRestaurant(restaurant),
-  //     map: map,
-  //     animation: google.maps.Animation.DROP}
-  //   );
-  //   return marker;
-  // }
 
+  /**
+   * When the map can't be loaded, render a map offline warning.
+   */
+  static mapOffline() {
+    const map = document.getElementById('map');
+    map.className = "map-offline";
+    map.innerHTML = `<div class="warning-icon">!</div>
+    <div class="warning-message" aria-hidden="true">Map ded</div>
+    <div class="warning-suggestion">Maybe fix it?<br>i dunno...</div>`;
+  }
 }
 

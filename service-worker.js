@@ -25,12 +25,9 @@ self.addEventListener('install', (event) => {
 
 // Delete previous caches on activation
 self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.filter((cacheName) => {
-          return cacheName.startsWith(appName)
-                 && !allCaches.includes(cacheName);
+  event.waitUntil(caches.keys().then((cacheNames) => {
+      return Promise.all(cacheNames.filter((cacheName) => {
+          return cacheName.startsWith(appName) && !allCaches.includes(cacheName);
         }).map((cacheName) => {
           return caches.delete(cacheName);
         }),
@@ -60,16 +57,17 @@ self.addEventListener('fetch', (event) => {
       return;
     }
 
-    serveImage(request) => {
+    serveImage = (request) => {
       let imageStorageUrl = request.url;
 
       // Make a new URL with a stripped suffix and extension from the request url
       // '/img/1-medium.jpg' will become '/img/1' then we'll use this as the KEY for
       // storing images into the cache
-      imageStorageUrl = imageStorageUrl.replace(/-small\.\w{3}|-medium\.\w{3}|-large\.\w{3}/i, '');
+      imageStorageUrl = imageStorageUrl.replace(/-small\.\w{4}|-medium\.\w{4}|-large\.\w{4}/i, '');
 
       return caches.open(contentImgsCache).then((cache) => {
         return cache.match(imageStorageUrl).then((response) => {
+
           // if an image is in the cache, return it,
           // else fetch it from the network, cache a clone, then return network response
           return response || fetch(request).then((networkResponse) => {

@@ -74,24 +74,34 @@ fillCuisinesHTML = (cuisines = self.cuisines) => {
 
 initMap = () => {
   if (navigator.onLine) {
-    self.newMap = L.map('map', {
-          center: [40.722216, -73.987501],
-          zoom: 12,
-          scrollWheelZoom: false
-        });
-    L.tileLayer('https://api.mapbox.com/styles/v1/travislf/ck0pmk1kq2kub1cl3w8hztbd1/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoidHJhdmlzbGYiLCJhIjoiY2swcGtydzJ3MDF4YzNjcG9wajg2NHo0aiJ9.0vuTGxRyn8Y2nSTDkxNXKA', {
-      mapboxToken: 'pk.eyJ1IjoidHJhdmlzbGYiLCJhIjoiY2swcGtydzJ3MDF4YzNjcG9wajg2NHo0aiJ9.0vuTGxRyn8Y2nSTDkxNXKA',
-      maxZoom: 18,
-      attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-        '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-        'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-      id: 'mapbox.streets',
-    }).addTo(newMap);
-    screenreaderFixes();
+    try {
+      self.newMap = L.map('map', {
+              center: [40.722216, -73.987501],
+              zoom: 12,
+              scrollWheelZoom: false
+            });
+        L.tileLayer('https://api.mapbox.com/styles/v1/travislf/ck0pmk1kq2kub1cl3w8hztbd1/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoidHJhdmlzbGYiLCJhIjoiY2swcGtydzJ3MDF4YzNjcG9wajg2NHo0aiJ9.0vuTGxRyn8Y2nSTDkxNXKA', {
+          mapboxToken: 'pk.eyJ1IjoidHJhdmlzbGYiLCJhIjoiY2swcGtydzJ3MDF4YzNjcG9wajg2NHo0aiJ9.0vuTGxRyn8Y2nSTDkxNXKA',
+          maxZoom: 18,
+          attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+            '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+            'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+          id: 'mapbox.streets',
+        }).addTo(newMap);
+
+        // once map is loaded, screenreader fixes can be initiated.
+        screenreaderFixes();
+    } catch {
+      // error during map load
+      console.log("Map couldn't be initialized", error);
+      DBHelper.mapOffline();
+    }
+  } else {
+    // we aren't online so loading map won't work
+    DBHelper.mapOffline();
   }
   updateRestaurants();
 
-  // once map is loaded, screenreader fixes can be initiated.
 };
 
 /**
@@ -139,11 +149,9 @@ resetRestaurants = (restaurants) => {
  */
 fillRestaurantsHTML = (restaurants = self.restaurants) => {
   const ul = document.getElementById('restaurants-list');
-  // if either newMap or L (leaflet) aren't defined exit early.
-  if (!newMap || !L) return;
-    restaurants.forEach(restaurant => {
-      ul.append(createRestaurantHTML(restaurant));
-    });
+  restaurants.forEach(restaurant => {
+    ul.append(createRestaurantHTML(restaurant));
+  });
   addMarkersToMap();
 };
 
@@ -159,7 +167,7 @@ createRestaurantHTML = (restaurant) => {
   const gradients = [gradient1, gradient2, gradient4, gradient4, gradient4, gradient4];
 
 
-  let chooseGradient = function getit() {
+  let chooseGradient = () => {
     const x = Math.floor(Math.random() * gradients.length);
     return gradients[x];
   };
@@ -183,11 +191,11 @@ createRestaurantHTML = (restaurant) => {
   gradient.setAttribute('aria-hidden', 'true');
   picture.className = 'restaurant-img';
   picture.setAttribute('aria-hidden', 'true');
-  source.srcset = DBHelper.imageSrcsetForRestaurant(restaurant);
-  source.sizes = DBHelper.imageSizesForRestaurant(restaurant);  source.media = '(min-width: 465px)';
   source.type = 'image/jpg';
   source.setAttribute('aria-hidden', 'true');
   img.src = DBHelper.imageUrlForRestaurant(restaurant);
+  img.srcset = DBHelper.imageSrcsetForRestaurant(restaurant);
+  img.sizes = DBHelper.imageSizesForRestaurant(restaurant);  source.media = '(min-width: 465px)';
   img.setAttribute('aria-hidden', 'true');
   entryBox.className = 'entry-box';
   entryBox.setAttribute('aria-hidden', 'true');
@@ -220,13 +228,14 @@ createRestaurantHTML = (restaurant) => {
  * Add markers for current restaurants to the map.
  */
 addMarkersToMap = (restaurants = self.restaurants) => {
+  // if either newMap or L (leaflet) aren't defined exit early.
+  if (!newMap || !L) return;
   restaurants.forEach(restaurant => {
     // Add marker to the map
     const marker = DBHelper.mapMarkerForRestaurant(restaurant, self.newMap);
-    marker.on("click", onClick);
-    function onClick() {
+    marker.on("click", () => {
       window.location.href = marker.options.url;
-    }
+    });
     self.markers.push(marker);
   });
 };

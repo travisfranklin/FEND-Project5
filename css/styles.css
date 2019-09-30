@@ -141,11 +141,46 @@ nav h1 a {
 #map {
   background-color: #ffffff;
   flex-grow: 1;
-  min-width: 617px;
+  min-width: 350px;
 }
 
 .leaflet-control-attribution.leaflet-control {
   font-size: 6px !important;
+}
+
+/* ======== Offline Map Warning ========= */
+.map-offline {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: column;
+  text-align: center;
+  background-color: #eee !important;
+}
+.map-offline div {
+  overflow-wrap: break-word;
+}
+.map-offline .warning-icon {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 60px;
+  background-color: #e80b7b;
+  font-size: 2.5em;
+  color: white;
+  margin: 0 0 10px;
+}
+.map-offline .warning-message {
+  font-size: 1.3em;
+}
+.map-offline .warning-suggestion {
+  font-size: .9em;
+}
+
+.map-offline .warning-suggestion p {
+  margin: 0;
 }
 
 /* ====================== Restaurant Filtering ====================== */

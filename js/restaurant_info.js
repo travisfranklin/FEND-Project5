@@ -33,8 +33,13 @@ initMap = () => {
           }).addTo(newMap);
           DBHelper.mapMarkerForRestaurant(self.restaurant, self.newMap);
         } catch(error) {
+          // error loading map
           console.log("Map couldn't be initialized", error);
+          DBHelper.mapOffline();
         }
+      } else {
+        // we aren't online so map won't load
+        DBHelper.mapOffline();
       }
       fillBreadcrumb();
       screenreaderFixes();
