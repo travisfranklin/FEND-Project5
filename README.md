@@ -13,9 +13,9 @@ This web app utilizes modern ES6 syntax for it's Javascript.
 
 This web app is built to responsively resize itself to any device on which it is used. It has been tested to function on the most popular phones and tablets on the market as well as traditional desktop resolutions.
 
-<img src="https://travisfranklin.github.io/FEND-Project5/img/desktop.png" alt="desktop" width="400px">
-<img src="https://travisfranklin.github.io/FEND-Project5/img/ipad.png" alt="ipad" width="250px">
-<img src="https://travisfranklin.github.io/FEND-Project5/img/iphone.png" alt="iphone" width="150px">
+| Desktop | iPad | iPhone |
+:--------:|:----:|:-------:
+<img src="https://travisfranklin.github.io/FEND-Project5/img/desktop.png" alt="desktop"> | <img src="https://travisfranklin.github.io/FEND-Project5/img/ipad.png" alt="ipad"> | <img src="https://travisfranklin.github.io/FEND-Project5/img/iphone.png" alt="iphone">
 
 On top of this, I've implemented a system for serving images that are the most appropriate for their size in the context of where they're being served.
 
@@ -40,9 +40,11 @@ This web app caches requests to the site's assets. Not only does this allow the 
 ## Site Installation
 
 1. In your terminal, navigate to the directory you would like this project to be placed in, and clone the project by running this command:
+
 ```git clone git@github.com:travisfranklin/FEND-Project5.git```
 
 2. This project required several url adjustments across different files to function properly on github pages that will need to be changed prior to firing up your server. Lucky for you, I've made it easy. If you're on a Unix system, go ahead and run this terminal command:
+
 ```perl -pi -w -e 's/\/FEND-Project5//g;' /*.js```
 
 3. You can now start up a simple HTTP server to serve up the site files on your local computer. Python has some simple tools to do this, and you don't even need to know Python. For most people, it's already installed on your computer.
