@@ -227,7 +227,7 @@ getParameterByName = (name, url) => {
  * Register service worker only if supported
  */
 if (navigator.serviceWorker) {
-  navigator.serviceWorker.register('/service-worker.js' , {scope: '/'}).then(function(reg) {
+  navigator.serviceWorker.register('/FEND-Project5/service-worker.js' , {scope: '/FEND-Project5/'}).then(function(reg) {
     console.log("Service Worker has been registered successfully!");
   }).catch((e) => {
     console.log("Couldn't register service worker... \n", e);
