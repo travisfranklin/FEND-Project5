@@ -4,8 +4,6 @@ let cuisines;
 var newMap;
 var markers = [];
 
-const hostedOnGitHubFlag = (window.location.hostname === "travisfranklin.github.io") ? 'github' : '' ;
-const baseUrl = '/FEND-Project5';
 
 /**
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
@@ -278,7 +276,7 @@ screenreaderFixes = () => {
 
 // Register service worker only if supported
 if (navigator.serviceWorker) {
-  navigator.serviceWorker.register('/service-worker.js' , {scope: '/'}).then((reg) => {
+  navigator.serviceWorker.register(`/FEND-Project5/service-worker.js` , {scope: '/FEND-Project5/'}).then((reg) => {
     console.log("Service Worker has been registered successfully!");
   }).catch((e) => {
     console.log("Couldn't register service worker... \n", e);
