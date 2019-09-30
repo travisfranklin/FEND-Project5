@@ -274,7 +274,7 @@ select option {
   display: flex;
   flex-wrap: wrap;
   flex-basis: 408px;
-  height: 89vh;
+  height: 86vh;
   overflow: auto;
   color: #fff;
   position:relative;
