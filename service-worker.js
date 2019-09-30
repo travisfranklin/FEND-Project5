@@ -1,7 +1,6 @@
 const appName = 'restaurant-reviews';
 const staticCacheName = `${appName}-v1.0`;
 const contentImgsCache = `${appName}-images`;
-
 const allCaches = [staticCacheName, contentImgsCache];
 
 // Cache all assets on install
@@ -41,14 +40,14 @@ self.addEventListener('fetch', (event) => {
 
   const requestUrl = new URL(event.request.url);
 
-  // highjack requests made to our app (excluding mapbox/leaflet)
+  // highjack requests made to the app (excluding mapbox/leaflet)
   if (requestUrl.origin === location.origin) {
 
     // respondWith restaurant.html if pathname startsWith '/restaurant.html'
     // this fixes the issue with IDs being placed at the end of the url
     if (requestUrl.pathname.startsWith('/FEND-Project5/restaurant.html')) {
       event.respondWith(caches.match('/FEND-Project5/restaurant.html'));
-      return; // Done handling request, so exit early.
+      return;
     }
 
     // If the request pathname starts with /img, handle those images
@@ -61,8 +60,8 @@ self.addEventListener('fetch', (event) => {
       let imageStorageUrl = request.url;
 
       // Make a new URL with a stripped suffix and extension from the request url
-      // '/img/1-medium.jpg' will become '/img/1' then we'll use this as the KEY for
-      // storing images into the cache
+      // '/img/1-medium.jpg' becomes '/img/1' this becomes the key for stored images
+      // in the cache
       imageStorageUrl = imageStorageUrl.replace(/-small\.\w{4}|-medium\.\w{4}|-large\.\w{4}/i, '');
 
       return caches.open(contentImgsCache).then((cache) => {

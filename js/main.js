@@ -1,3 +1,4 @@
+// Define Global Variables
 let restaurants;
 let neighborhoods;
 let cuisines;
@@ -5,18 +6,16 @@ var newMap;
 var markers = [];
 
 
-/**
- * Fetch neighborhoods and cuisines as soon as the page is loaded.
- */
+
+// Fetch neighborhoods and cuisines as soon as the page is loaded.
 document.addEventListener('DOMContentLoaded', (event) => {
   initMap(); // added
   fetchNeighborhoods();
   fetchCuisines();
 });
 
-/**
- * Fetch all neighborhoods and set their HTML.
- */
+
+// Fetch all neighborhoods and set their HTML.
 fetchNeighborhoods = () => {
   DBHelper.fetchNeighborhoods((error, neighborhoods) => {
     if (error) { // Got an error
@@ -28,9 +27,8 @@ fetchNeighborhoods = () => {
   });
 };
 
-/**
- * Set neighborhoods HTML.
- */
+
+// Set neighborhoods HTML.
 fillNeighborhoodsHTML = (neighborhoods = self.neighborhoods) => {
   const select = document.getElementById('neighborhoods-select');
   neighborhoods.forEach(neighborhood => {
@@ -41,9 +39,8 @@ fillNeighborhoodsHTML = (neighborhoods = self.neighborhoods) => {
   });
 };
 
-/**
- * Fetch all cuisines and set their HTML.
- */
+
+// Fetch all cuisines and set their HTML.
 fetchCuisines = () => {
   DBHelper.fetchCuisines((error, cuisines) => {
     if (error) { // Got an error!
@@ -55,9 +52,7 @@ fetchCuisines = () => {
   });
 };
 
-/**
- * Set cuisines HTML.
- */
+// Set cuisines HTML.
 fillCuisinesHTML = (cuisines = self.cuisines) => {
   const select = document.getElementById('cuisines-select');
 
@@ -69,10 +64,7 @@ fillCuisinesHTML = (cuisines = self.cuisines) => {
   });
 };
 
-/**
- * Initialize leaflet map, called from HTML.
- */
-
+// Initialize leaflet map, called from HTML.
 initMap = () => {
   if (navigator.onLine) {
     try {
@@ -93,21 +85,19 @@ initMap = () => {
         // once map is loaded, screenreader fixes can be initiated.
         screenreaderFixes();
     } catch {
-      // error during map load
+      // if there's an error during map load
       console.log("Map couldn't be initialized", error);
       DBHelper.mapOffline();
     }
   } else {
-    // we aren't online so loading map won't work
+    // if we aren't online, loading the map won't work
     DBHelper.mapOffline();
   }
   updateRestaurants();
 
 };
 
-/**
- * Update page and map for current restaurants.
- */
+// Update page and map for current restaurants.
 updateRestaurants = () => {
   const cSelect = document.getElementById('cuisines-select');
   const nSelect = document.getElementById('neighborhoods-select');
@@ -128,9 +118,7 @@ updateRestaurants = () => {
   });
 };
 
-/**
- * Clear current restaurants, their HTML and remove their map markers.
- */
+// Clear current restaurants, their HTML and remove their map markers.
 resetRestaurants = (restaurants) => {
   // Remove all restaurants
   self.restaurants = [];
@@ -145,9 +133,7 @@ resetRestaurants = (restaurants) => {
   self.restaurants = restaurants;
 };
 
-/**
- * Create all restaurants HTML and add them to the webpage.
- */
+// Create all restaurants HTML and add them to the webpage.
 fillRestaurantsHTML = (restaurants = self.restaurants) => {
   const ul = document.getElementById('restaurants-list');
   restaurants.forEach(restaurant => {
@@ -156,23 +142,22 @@ fillRestaurantsHTML = (restaurants = self.restaurants) => {
   addMarkersToMap();
 };
 
-/**
- * Create restaurant HTML.
- */
+// Create restaurant HTML.
 createRestaurantHTML = (restaurant) => {
 
+  // Just for fun, I've added some gradient style options for restaurant list items
   const gradient1 = 'linear-gradient(to right, #f12711bb, #f5af19bb)';
   const gradient2 = 'linear-gradient(to right, #00b4dbbb, #0083b0bb)';
-  const gradient3 = 'linear-gradient(to right, #7f00ffbb, #e100ffbb)';
   const gradient4 = 'linear-gradient(to right, #aaaaccdd, #aaaaccbb)';
   const gradients = [gradient1, gradient2, gradient4, gradient4, gradient4, gradient4];
 
-
+  // This function randomly applies one of the gradients above as an overlay to a restaurant image
   let chooseGradient = () => {
     const x = Math.floor(Math.random() * gradients.length);
     return gradients[x];
   };
 
+  // define all of the elements for a restaurant tile's html
   const li = document.createElement('li');
   const a = document.createElement('a');
   const gradient = document.createElement('div');
@@ -185,6 +170,7 @@ createRestaurantHTML = (restaurant) => {
   const address = document.createElement('p');
   const more = document.createElement('a');
 
+  // set contents of each element
   a.className = 'restaurant-wrapper';
   a.href = DBHelper.urlForRestaurant(restaurant);
   a.setAttribute('aria-label', `${restaurant.name}. ${restaurant.neighborhood} at ${restaurant.address}. View details.`);
@@ -210,6 +196,7 @@ createRestaurantHTML = (restaurant) => {
   more.innerHTML = 'View Details ';
   more.setAttribute('aria-hidden', 'true');
 
+  // append all elements to each other in a heirarchy
   li.append(a);
   a.append(gradient);
   gradient.style.background = chooseGradient();
@@ -222,14 +209,14 @@ createRestaurantHTML = (restaurant) => {
   entryBox.append(address);
   entryBox.append(more);
 
+  // finish with the li, appending it to the ul
   return li;
 };
 
-/**
- * Add markers for current restaurants to the map.
- */
+// Add markers for current restaurants to the map.
 addMarkersToMap = (restaurants = self.restaurants) => {
   // if either newMap or L (leaflet) aren't defined exit early.
+  // no need for map markers if the map isn't there.
   if (!newMap || !L) return;
   restaurants.forEach(restaurant => {
     // Add marker to the map
@@ -241,9 +228,7 @@ addMarkersToMap = (restaurants = self.restaurants) => {
   });
 };
 
-/**
- * Add hide specific elements from screen readers.
- */
+// Hide specific elements from screen readers.
 hideItemsFromScreenreader = (className) => {
   const items = Array.from(document.getElementsByClassName(className));
   for (item of items) {
@@ -252,9 +237,7 @@ hideItemsFromScreenreader = (className) => {
   }
 };
 
-/**
- * Add accessibility labeling for map copyright.
- */
+// Add accessibility labeling for map copyright.
 addMapCopyright = () => {
   const mapAttribution = Array.from(document.getElementsByClassName('leaflet-control-attribution'))[0];
   mapAttribution.setAttribute(
@@ -264,9 +247,8 @@ addMapCopyright = () => {
   mapAttribution.setAttribute('tabindex', 0);
 };
 
-/**
- * Run screenreader adjustment functions after site has loaded.
- */
+// Run screenreader adjustment functions after site has loaded.
+// Called by InitMap();
 screenreaderFixes = () => {
   hideItemsFromScreenreader('leaflet-control-zoom-in');
   hideItemsFromScreenreader('leaflet-control-zoom-out');

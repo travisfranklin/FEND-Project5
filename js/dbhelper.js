@@ -1,20 +1,15 @@
-/**
- * Common database helper functions.
- */
+// Common database helper functions.
 class DBHelper {
 
-  /**
-   * Database URL.
-   * Change this to restaurants.json file location on your server.
-   */
+  // Database URL.
+  // Change this to restaurants.json file location on your server.
+
   static get DATABASE_URL() {
     const port = 8000 // Change this to your server port
     return `/FEND-Project5/data/restaurants.json`;
   }
 
-  /**
-   * Fetch all restaurants.
-   */
+  // Fetch all restaurants.
   static fetchRestaurants(callback) {
     let xhr = new XMLHttpRequest();
     xhr.open('GET', DBHelper.DATABASE_URL);
@@ -31,9 +26,7 @@ class DBHelper {
     xhr.send();
   }
 
-  /**
-   * Fetch a restaurant by its ID.
-   */
+  // Fetch a restaurant by its ID.
   static fetchRestaurantById(id, callback) {
     // fetch all restaurants with proper error handling.
     DBHelper.fetchRestaurants((error, restaurants) => {
@@ -50,9 +43,7 @@ class DBHelper {
     });
   }
 
-  /**
-   * Fetch restaurants by a cuisine type with proper error handling.
-   */
+  // Fetch restaurants by a cuisine type with proper error handling.
   static fetchRestaurantByCuisine(cuisine, callback) {
     // Fetch all restaurants  with proper error handling
     DBHelper.fetchRestaurants((error, restaurants) => {
@@ -66,9 +57,7 @@ class DBHelper {
     });
   }
 
-  /**
-   * Fetch restaurants by a neighborhood with proper error handling.
-   */
+  // Fetch restaurants by a neighborhood with proper error handling.
   static fetchRestaurantByNeighborhood(neighborhood, callback) {
     // Fetch all restaurants
     DBHelper.fetchRestaurants((error, restaurants) => {
@@ -82,9 +71,7 @@ class DBHelper {
     });
   }
 
-  /**
-   * Fetch restaurants by a cuisine and a neighborhood with proper error handling.
-   */
+  // Fetch restaurants by a cuisine and a neighborhood with proper error handling.
   static fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood, callback) {
     // Fetch all restaurants
     DBHelper.fetchRestaurants((error, restaurants) => {
@@ -103,9 +90,7 @@ class DBHelper {
     });
   }
 
-  /**
-   * Fetch all neighborhoods with proper error handling.
-   */
+  // Fetch all neighborhoods with proper error handling.
   static fetchNeighborhoods(callback) {
     // Fetch all restaurants
     DBHelper.fetchRestaurants((error, restaurants) => {
@@ -121,9 +106,7 @@ class DBHelper {
     });
   }
 
-  /**
-   * Fetch all cuisines with proper error handling.
-   */
+  // Fetch all cuisines with proper error handling.
   static fetchCuisines(callback) {
     // Fetch all restaurants
     DBHelper.fetchRestaurants((error, restaurants) => {
@@ -139,26 +122,20 @@ class DBHelper {
     });
   }
 
-  /**
-   * Restaurant page URL.
-   */
+  // Restaurant page URL.
   static urlForRestaurant(restaurant) {
     return (`./restaurant.html?id=${restaurant.id}`);
   }
 
-  /**
-   * Restaurant image URL. It defaults to a medium sized image. It uses restaurant.photograph
-   * and fallbacks to restaurant.id if former is missing.
-   */
+  // Restaurant image URL. It defaults to a medium sized image. It uses restaurant.photograph
+  // and fallbacks to restaurant.id if former is missing.
   static imageUrlForRestaurant(restaurant) {
     let url = `/FEND-Project5/img/${(restaurant.photograph.split('.')[0]||restaurant.id)}-medium.jpeg`;
     return url;
   }
 
-  /**
-   * Restaurant srcset attribute for browser to decide best resolution. It uses restaurant.photograph
-   * and fallbacks to restaurant.id if former is missing.
-   */
+  // Restaurant srcset attribute for browser to decide best resolution. It uses restaurant.photograph
+  // and fallbacks to restaurant.id if former is missing.
   static imageSrcsetForRestaurant(restaurant) {
     const imageSrc = `/FEND-Project5/img/${(restaurant.photograph.split('.')[0]||restaurant.id)}`;
     return `${imageSrc}-small.jpeg 300w,
@@ -166,19 +143,15 @@ class DBHelper {
             ${imageSrc}-large.jpeg 800w`;
   }
 
-  /**
-   * Restaurant sizes attribute so browser knows image sizes before deciding
-   * what image to download.
-   */
+  // Restaurant sizes attribute so browser knows image sizes before deciding
+  // what image to download.
   static imageSizesForRestaurant(restaurant) {
     return `(max-width: 360px) 280px,
             (max-width: 600px) 600px,
             400px`;
   }
 
-  /**
-   * Map marker for a restaurant.
-   */
+  // Map marker for a restaurant.
    static mapMarkerForRestaurant(restaurant, map) {
     // https://leafletjs.com/reference-1.3.0.html#marker
     const marker = new L.marker([restaurant.latlng.lat, restaurant.latlng.lng],
@@ -190,9 +163,7 @@ class DBHelper {
     return marker;
   }
 
-  /**
-   * When the map can't be loaded, render a map offline warning.
-   */
+  // When the map can't be loaded, render a map offline warning.
   static mapOffline() {
     const map = document.getElementById('map');
     map.className = "map-offline";

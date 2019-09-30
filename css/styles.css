@@ -9,7 +9,7 @@
 
 label {
   position:absolute;
-  right: -999999999px;
+  left: -999999999px;
 }
 
 html {

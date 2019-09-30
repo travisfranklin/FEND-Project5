@@ -1,16 +1,12 @@
 let restaurant;
 var newMap;
 
-/**
- * Initialize map as soon as the page is loaded.
- */
+// Initialize map as soon as the page is loaded.
 document.addEventListener('DOMContentLoaded', (event) => {
   initMap();
 });
 
-/**
- * Initialize leaflet map
- */
+// Initialize leaflet map
 initMap = () => {
   fetchRestaurantFromURL((error, restaurant) => {
     if (error) { // Got an error!
@@ -47,9 +43,7 @@ initMap = () => {
   });
 };
 
-/**
- * Get current restaurant from page URL.
- */
+// Get current restaurant from page URL.
 fetchRestaurantFromURL = (callback) => {
   if (self.restaurant) { // restaurant already fetched!
     callback(null, self.restaurant)
@@ -72,9 +66,7 @@ fetchRestaurantFromURL = (callback) => {
   }
 };
 
-/**
- * Create restaurant HTML and add it to the webpage
- */
+// Create restaurant HTML and add it to the webpage
 fillRestaurantHTML = (restaurant = self.restaurant) => {
   const name = document.getElementById('restaurant-name');
   name.innerHTML = restaurant.name;
@@ -114,9 +106,7 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   fillReviewsHTML();
 };
 
-/**
- * Create restaurant operating hours HTML table and add it to the webpage.
- */
+// Create restaurant operating hours HTML table and add it to the webpage.
 fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => {
   const hours = document.getElementById('restaurant-hours');
   for (let key in operatingHours) {
@@ -136,9 +126,7 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
   }
 };
 
-/**
- * Create all reviews HTML and add them to the webpage.
- */
+// Create all reviews HTML and add them to the webpage.
 fillReviewsHTML = (reviews = self.restaurant.reviews) => {
   const container = document.getElementById('reviews-container');
   const title = document.createElement('h2');
@@ -160,9 +148,7 @@ fillReviewsHTML = (reviews = self.restaurant.reviews) => {
   container.appendChild(ul);
 };
 
-/**
- * Create review HTML and add it to the webpage.
- */
+// Create review HTML and add it to the webpage.
 createReviewHTML = (review) => {
   const li = document.createElement('li');
   const name = document.createElement('p');
@@ -196,9 +182,7 @@ createReviewHTML = (review) => {
   return li;
 };
 
-/**
- * Add restaurant name to the breadcrumb navigation menu
- */
+// Add restaurant name to the breadcrumb navigation menu
 fillBreadcrumb = (restaurant = self.restaurant) => {
   const breadcrumb = document.getElementById('breadcrumb');
   const li = document.createElement('li');
@@ -207,9 +191,7 @@ fillBreadcrumb = (restaurant = self.restaurant) => {
   document.title = `Gourmet | ${restaurant.name} info`;
 };
 
-/**
- * Get a parameter by name from page URL.
- */
+// Get a parameter by name from page URL.
 getParameterByName = (name, url) => {
   if (!url)
     url = window.location.href;
@@ -223,9 +205,7 @@ getParameterByName = (name, url) => {
   return decodeURIComponent(results[2].replace(/\+/g, ' '));
 };
 
-/**
- * Register service worker only if supported
- */
+// Register service worker only if supported
 if (navigator.serviceWorker) {
   navigator.serviceWorker.register('/FEND-Project5/service-worker.js' , {scope: '/FEND-Project5/'}).then(function(reg) {
     console.log("Service Worker has been registered successfully!");
@@ -234,9 +214,7 @@ if (navigator.serviceWorker) {
   });
 }
 
-/**
- * Add hide specific elements from screen readers.
- */
+// Add hide specific elements from screen readers.
 hideItemsFromScreenreader = (className) => {
   const items = Array.from(document.getElementsByClassName(className));
   for (item of items) {
@@ -245,9 +223,7 @@ hideItemsFromScreenreader = (className) => {
   }
 };
 
-/**
- * Add accessibility labeling for map copyright.
- */
+// Add accessibility labeling for map copyright.
 addMapCopyright = () => {
   const mapAttribution = Array.from(document.getElementsByClassName('leaflet-control-attribution'))[0];
   mapAttribution.setAttribute(
@@ -257,9 +233,7 @@ addMapCopyright = () => {
   mapAttribution.setAttribute('tabindex', 0);
 };
 
-/**
- * Run screenreader adjustment functions after site has loaded.
- */
+// Run screenreader adjustment functions after site has loaded.
 screenreaderFixes = () => {
   hideItemsFromScreenreader('leaflet-control-zoom-in');
   hideItemsFromScreenreader('leaflet-control-zoom-out');
