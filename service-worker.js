@@ -9,15 +9,15 @@ self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(staticCacheName).then((cache) => {
       return cache.addAll([
-        '/',
-        '/restaurant.html',
-        '/css/styles.css',
-        '/js/dbhelper.js',
-        '/js/main.js',
-        '/js/restaurant_info.js',
-        '/data/restaurants.json',
-        '/img/logo.svg',
-        '/favicon.ico',
+        '/FEND-Project5/',
+        '/FEND-Project5/restaurant.html',
+        '/FEND-Project5/css/styles.css',
+        '/FEND-Project5/js/dbhelper.js',
+        '/FEND-Project5/js/main.js',
+        '/FEND-Project5/js/restaurant_info.js',
+        '/FEND-Project5/data/restaurants.json',
+        '/FEND-Project5/img/logo.svg',
+        '/FEND-Project5/favicon.ico',
       ]);
     }),
   );
@@ -46,8 +46,8 @@ self.addEventListener('fetch', (event) => {
 
     // respondWith restaurant.html if pathname startsWith '/restaurant.html'
     // this fixes the issue with IDs being placed at the end of the url
-    if (requestUrl.pathname.startsWith('/restaurant.html')) {
-      event.respondWith(caches.match('/restaurant.html'));
+    if (requestUrl.pathname.startsWith('/FEND-Project5/restaurant.html')) {
+      event.respondWith(caches.match('/FEND-Project5/restaurant.html'));
       return; // Done handling request, so exit early.
     }
 
