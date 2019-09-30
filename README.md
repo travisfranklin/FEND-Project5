@@ -1,4 +1,4 @@
-![gourmet logo](https://travisfranklin.github.io/FEND-Project5/img/logo.svg width=200)
+![gourmet logo](https://travisfranklin.github.io/FEND-Project5/img/logo.svg | width=200)
 The Consummate Culinary Collection for Caloric Connoisseurs
 
 # Udacity FEND Project 5: Restaurant Reviews
@@ -13,7 +13,7 @@ This web app utilizes modern ES6 syntax for it's Javascript.
 
 This web app is built to responsively resize itself to any device on which it is used. It has been tested to function on the most popular phones and tablets on the market as well as traditional desktop resolutions.
 
-![desktop](https://travisfranklin.github.io/FEND-Project5/img/desktop.png width=400)![ipad](https://travisfranklin.github.io/FEND-Project5/img/ipad.png width=300)![iphone](https://travisfranklin.github.io/FEND-Project5/img/iphone.png width=100)
+![desktop](https://travisfranklin.github.io/FEND-Project5/img/desktop.png | width=400)![ipad](https://travisfranklin.github.io/FEND-Project5/img/ipad.png | width=300)![iphone](https://travisfranklin.github.io/FEND-Project5/img/iphone.png | width=100)
 
 On top of this, I've implemented a system for serving images that are the most appropriate for their size in the context of where they're being served.
 
@@ -23,7 +23,7 @@ This web app utilizes [Mapbox's API](https://docs.mapbox.com/api/) along with [L
 
 If the user attempts to visit the site offline, the site will detect their lack of access to the map's api and replace the map's content dynamically.
 
-![map disconnect](https://travisfranklin.github.io/FEND-Project5/img/mapdisconnect.png width=300)
+![map disconnect](https://travisfranklin.github.io/FEND-Project5/img/mapdisconnect.png | width=300)
 
 ### A11y
 
