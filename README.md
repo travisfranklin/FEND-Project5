@@ -43,9 +43,11 @@ This web app caches requests to the site's assets. Not only does this allow the 
 
 ```git clone git@github.com:travisfranklin/FEND-Project5.git```
 
-2. This project required several url adjustments across different files to function properly on github pages that will need to be changed prior to firing up your server. Lucky for you, I've made it easy. If you're on a Unix system, go ahead and run this terminal command:
+2. This project required several url adjustments across different files to function properly on github pages that will need to be changed prior to firing up your server. Lucky for you, I've made it easy. If you're on a Unix system, just CD into the project directory and go ahead and run this terminal command:
 
-```perl -pi -w -e 's/\/FEND-Project5//g;' /*.js```
+```perl -pi -w -e 's/\/FEND-Project5//g;' js/*.js```
+
+After that, type `cd js` and run the command again.
 
 3. You can now start up a simple HTTP server to serve up the site files on your local computer. Python has some simple tools to do this, and you don't even need to know Python. For most people, it's already installed on your computer.
 
