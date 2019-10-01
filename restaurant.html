@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
   <meta charset="utf-8">
@@ -24,10 +24,10 @@
       <div class="restaurant-name-container">
         <h1 aria-hidden="true" tabindex="-1" id="restaurant-name"></h1>
       </div>
+      <ul aria-hidden="true" tabindex="-1" id="breadcrumb" >
+        <li><a aria-hidden="true" tabindex="-1" href="./">Home</a></li>
+      </ul>
     </nav>
-    <ul aria-hidden="true" tabindex="-1" id="breadcrumb" >
-      <li><a aria-hidden="true" tabindex="-1" href="./">Home</a></li>
-    </ul>
   </header>
 
   <main id="maincontent">
@@ -47,7 +47,7 @@
         </div>
       </div>
 
-      <div id="map" aria-label="map of restaurants in New York. "></div>
+      <div id="map" role="application" aria-label="map of restaurants in New York. "></div>
     </section>
 
   </main>
