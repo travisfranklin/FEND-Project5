@@ -225,6 +225,7 @@ select {
   font-weight: 700;
   color: #12191b;
   line-height: 1.3;
+  margin-top: 10px;
   padding: .6em 1.4em .5em .8em;
   width: 120px;
   max-width: 100%;
@@ -604,7 +605,6 @@ span {
   }
 
   select {
-    margin-top: 10px;
     padding: .4em 1em .3em .6em;
   }
 
